@@ -1,7 +1,7 @@
-let cantidad: number = 3;
-let arregloNombre: string[] = new Array(cantidad);
-let arregloAnio: number[] = new Array(cantidad);
-let arregloAltura: number[] = new Array(cantidad);
+let dimensionArreglo: number = Number(prompt("Ingrese el tamaño de los arreglos");
+let arregloNombre: string[] = new Array(dimensionArreglo);
+let arregloAnio: number[] = new Array(dimensionArreglo);
+let arregloAltura: number[] = new Array(dimensionArreglo);
 
 function cargarArreglos(
   nombres: string[],
@@ -31,56 +31,56 @@ function escribirPorPantalla(
   }
 }
 
-cargarArreglos(arregloNombre, arregloAnio, arregloAltura, cantidad);
-escribirPorPantalla(arregloNombre, arregloAnio, arregloAltura, cantidad);
-
-function comparar(
-  anio: number[],
-  altura: number[],
-  i: number,
-  j: number
-): number {
-  let comparacion: number;
-  if (anio[i] === anio[j]) {
-    if (altura[i] === altura[j]) {
-      comparacion = 0;
-    } else if (altura[i] < altura[j]) {
-      comparacion = -1;
-    } else {
-      comparacion = 1;
-    }
-  } else if (anio[i] < anio[j]) {
-    comparacion = -1;
+function compararValores(valorUno: number, valorDos: number): number {
+  if (valorUno > valorDos) {
+  return 1;
+  } else if (valorUno < valorDos) {
+  return -1;
   } else {
-    comparacion = 1;
+  return 0;
   }
-  return comparacion;
 }
 
-function intercambiar(arreglo: number[], n: number, m: number) {
-  let aux: number;
-  aux = arreglo[n];
-  arreglo[n] = arreglo[m];
-  arreglo[m] = aux;
+function intercambiarDatos(nombres: string[], anio: number[], altura: number[], posicion1: number, posicion2: number) {
+  let nombresAux: string;
+  let anioAux, alturaAux: number;
+  nombresAux = nombres[posicion1];
+  anioAux = anio[posicion1];
+  alturaAux = altura[posicion1];
+  nombres[posicion1] = nombres[posicion2];
+  anio[posicion1] = anio[posicion2];
+  altura[posicion1] = altura[posicion2];
+  nombres[posicion2] = nombresAux;
+  anio[posicion2] = anioAux;
+  altura[posicion2] = alturaAux;
 }
 
-function burbuja(
-  nombres: string[],
-  anio: number[],
-  altura: number[],
-  cantidad: number
-) {
-  let i: number, j: number;
-  for (i = 2; i <= cantidad; i++) {
-    for (j = 0; j < cantidad - 1; j++) {
-      if (comparar(anio, altura, j, j + 1) === 1) {
-        intercambiar(nombres, j, j + 1);
-        intercambiar(anio, j, j + 1);
-        intercambiar(altura, j, j + 1);
+function burbuja(nombres: string[], anio: number[], altura: number[], cantidad: number) {
+  let i, j: number;
+  let resultadoCompararAnio: number = 0;
+  let resultadoCompararAltura: number = 0;
+  for (i = 2; i < cantidad; i++) {
+    for (j = 0; j < (cantidad - 1); j++) {
+      resultadoCompararAnio = compararValores(anio[j], anio[j + 1]);
+      if (resultadoCompararAnio === 1) {
+        intercambiarDatos(nombres, anio, altura, j, j + 1);
+      } else {
+        if (resultadoCompararAnio === 0) {
+          resultadoCompararAltura = compararValores(
+            altura[j],
+            altura[j + 1]
+          );
+          if (resultadoCompararAltura === 1) {
+            intercambiarDatos(nombres, anio, altura, j, j + 1);
+          }
+        }
       }
-      escribirPorPantalla(arregloNombre, arregloAnio, arregloAltura, 3);
     }
   }
 }
 
-burbuja(arregloNombre, arregloAnio, arregloAltura, 3);
+cargarArreglos(arregloNombre, arregloAnio, arregloAltura, dimensionArreglo);
+escribirPorPantalla(arregloNombre, arregloAnio, arregloAltura, dimensionArreglo);
+burbuja(arregloNombre, arregloAnio, arregloAltura, dimensionArreglo);
+console.log("ORDENADO");
+escribirPorPantalla(arregloNombre, arregloAnio, arregloAltura, dimensionArreglo);
